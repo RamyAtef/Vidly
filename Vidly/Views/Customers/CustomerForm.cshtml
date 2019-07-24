@@ -1,0 +1,42 @@
+﻿.Customer.@using System.Web.UI.WebControls
+@model Vidly.ViewModels.CustomerFormViewModel
+@{
+    ViewBag.Title = "New";
+}
+
+<h2>New Customer</h2>
+
+@using (Html.BeginForm("Save","Customers"))
+{
+    @Html.AntiForgeryToken();
+@Html.HiddenFor(e=>e.Customer.Id)
+<div class="form-group">
+    @Html.LabelFor(m => m.Customer.Name)
+    @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+    @Html.ValidationMessageFor(e=>e.Customer.Name,"",new {@class="text-danger"},"")
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Customer.Birthdate)
+    @Html.TextBoxFor(m => m.Customer.Birthdate,"{0:d MMM yyyy}", new { @class = "form-control" })
+    @Html.ValidationMessageFor(e=>e.Customer.Birthdate)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(m => m.Customer.MembershipTypeId)
+    @Html.DropDownListFor(m => m.Customer.MembershipTypeId,new SelectList(Model.MembershipTypes,"Id","Name"),"Select Membership Type", new { @class = "form-control" })
+    @Html.ValidationMessageFor(e=>e.Customer.MembershipTypeId)
+
+</div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsLetter) Subscribed to Newsletters?
+        </label>
+    </div>
+    @Html.HiddenFor(e=>e.Customer.Id)
+<button class="btn btn-primary">Add</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
